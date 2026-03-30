@@ -1,0 +1,57 @@
+package com.fooddelivery.auth_service.Service;
+
+import org.jspecify.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.fooddelivery.auth_service.dto.AuthResponse;
+import com.fooddelivery.auth_service.dto.RegisterRequest;
+import com.fooddelivery.auth_service.model.User;
+import com.fooddelivery.auth_service.repository.UserRepository;
+import com.fooddelivery.auth_service.security.JwtUtil;
+
+@Service
+public class AuthService {
+
+	@Autowired
+	private  UserRepository userRepository;
+	@Autowired
+	 private  PasswordEncoder passwordEncoder;
+	@Autowired
+	  private  JwtUtil jwtUtil;
+	public AuthResponse register(RegisterRequest request) {
+
+	    if (userRepository.existsByEmail(request.getEmail())) {
+	        throw new RuntimeException("Email already registered!");
+	    }
+
+	    User user = new User();
+
+	    user.setName(request.getName());
+	    user.setEmail(request.getEmail());
+	    user.setPassword(passwordEncoder.encode(request.getPassword()));
+	    user.setPhone(request.getPhone());
+	    user.setRole(User.Role.valueOf(request.getRole().toUpperCase()));
+	    user.setActive(true);
+
+	    userRepository.save(user);
+
+	    String token = jwtUtil.generateToken(
+	        user.getEmail(),
+	        user.getRole().name()
+	    );
+
+	    return new AuthResponse(
+	        token,
+	        user.getRole().name(),
+	        user.getName(),
+	        "Registration successful!"
+	    );
+	}
+
+	
+
+}

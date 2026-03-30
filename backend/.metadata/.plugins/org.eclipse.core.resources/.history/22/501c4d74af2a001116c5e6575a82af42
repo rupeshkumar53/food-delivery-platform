@@ -1,0 +1,13 @@
+spring.application.name=Eureka-Server
+
+# server port
+server.port=9091
+
+# Eureka Config
+eureka.client.register-with-eureka=false
+eureka.client.fetch-registry=false
+
+
+# Log Level
+logging.level.com.netflix.eureka=off
+logging.level.com.netflix.discovery=off

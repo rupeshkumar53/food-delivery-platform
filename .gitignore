@@ -1,0 +1,17 @@
+# Backend - compiled files
+**/target/
+**/.mvn/
+
+# Sensitive files
+**/application-local.properties
+
+# Frontend
+**/node_modules/
+**/build/
+**/.env
+
+# IDE files
+**/.idea/
+**/.vscode/
+*.iml
+*.class
