@@ -13,9 +13,9 @@
 	</parent>
 
 	<groupId>com.fooddelivery</groupId>
-	<artifactId>auth-service</artifactId>
+	<artifactId>payment-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>auth-service</name>
+	<name>payment-service</name>
 
 	<properties>
 		<java.version>17</java.version>
@@ -67,10 +67,7 @@
 			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
-		</dependency>
+
 		<!-- JWT -->
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
@@ -90,10 +87,10 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- Lombok -->
+		<!-- DevTools -->
 		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
 			<optional>true</optional>
 		</dependency>
 

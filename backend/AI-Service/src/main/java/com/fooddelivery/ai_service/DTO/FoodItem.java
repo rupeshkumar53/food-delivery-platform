@@ -1,0 +1,42 @@
+package com.fooddelivery.ai_service.DTO;
+
+public class FoodItem {
+
+	private String itemName;
+	private String restaurantName;
+	private String reason;
+	private String estimatedPrice;
+
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+
+	public String getRestaurantName() {
+		return restaurantName;
+	}
+
+	public void setRestaurantName(String restaurantName) {
+		this.restaurantName = restaurantName;
+	}
+
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+
+	public String getEstimatedPrice() {
+		return estimatedPrice;
+	}
+
+	public void setEstimatedPrice(String estimatedPrice) {
+		this.estimatedPrice = estimatedPrice;
+	}
+
+}
