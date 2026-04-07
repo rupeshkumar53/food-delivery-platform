@@ -7,6 +7,20 @@ public class FoodItem {
 	private String reason;
 	private String estimatedPrice;
 
+	
+	public FoodItem(String itemName, String restaurantName, String reason, String estimatedPrice) {
+		super();
+		this.itemName = itemName;
+		this.restaurantName = restaurantName;
+		this.reason = reason;
+		this.estimatedPrice = estimatedPrice;
+	}
+
+	public FoodItem() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public String getItemName() {
 		return itemName;
 	}

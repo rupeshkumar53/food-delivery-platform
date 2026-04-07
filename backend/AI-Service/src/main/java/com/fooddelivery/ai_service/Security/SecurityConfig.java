@@ -20,6 +20,7 @@ public class SecurityConfig {
             HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
+            .csrf(cors -> cors.disable())
             .sessionManagement(session -> session
                 .sessionCreationPolicy(
                     SessionCreationPolicy.STATELESS))

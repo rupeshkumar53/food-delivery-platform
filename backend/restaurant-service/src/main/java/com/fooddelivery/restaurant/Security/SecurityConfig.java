@@ -29,10 +29,18 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                     "/api/restaurants/create",
+                    "/api/restaurants/**",
                     "/api/restaurants/{id}",
+                    "/api/menu/**",
                     "/api/menu/{restaurantId}",
                     "/api/restaurants/health")
                 .permitAll()
+                .requestMatchers(
+                        "/api/restaurants",
+                        "/api/restaurants/all",
+                        "/api/restaurants/owner/**",
+                        "/api/menu/**")
+                    .permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtFilter,

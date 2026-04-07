@@ -83,4 +83,24 @@ public class RestaurantService {
 
         return res;
     }
+    //all data
+    public List<RestaurantResponse> getAllRestaurants() {
+        return restaurantRepository.findAll()
+            .stream()
+            .map(this::toResponse)
+            .collect(java.util.stream.Collectors.toList());
+    }
+    // onwer
+    public List<RestaurantResponse> getByOwnerId(
+            Long ownerId) {
+    	System.out.println(ownerId);
+        List<RestaurantResponse> d= restaurantRepository
+                .findByOwnerId(ownerId)
+                .stream()
+                .map(this::toResponse)
+                .collect(java.util.stream
+                    .Collectors.toList());;
+        System.out.println(d);
+		return d;
+    }
 }

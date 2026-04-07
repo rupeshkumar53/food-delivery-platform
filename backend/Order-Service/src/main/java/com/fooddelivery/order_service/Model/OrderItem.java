@@ -1,5 +1,7 @@
 package com.fooddelivery.order_service.Model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.*;
 
 @Entity

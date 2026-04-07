@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/delivery")
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 public class DeliveryController {
 
 	@Autowired
@@ -22,8 +22,12 @@ public class DeliveryController {
 	// Partner register
 	@PostMapping("/register")
 	public ResponseEntity<DeliveryPartnerResponse> register(@RequestHeader("X-User-Id") Long userId,
-			@RequestParam String name, @RequestParam String phone, @RequestParam String vehicleType) {
-		return ResponseEntity.ok(deliveryService.registerPartner(userId, name, phone, vehicleType));
+			@RequestParam String name, @RequestParam String phone, @RequestParam String vehicleType,
+			@RequestParam("latitude") Double latitude,
+			@RequestParam("longitude") Double longitude) {
+		System.out.println("Rupeshhh");
+		return ResponseEntity
+				.ok(deliveryService.registerPartner(userId, name, phone, vehicleType, latitude, longitude));
 	}
 
 	// Available partners dekho
@@ -62,5 +66,42 @@ public class DeliveryController {
 	@GetMapping("/health")
 	public ResponseEntity<String> health() {
 		return ResponseEntity.ok("Delivery Service is UP! ✅");
+	}
+
+	// Nearest partner find karo
+	@GetMapping("/nearest")
+	public ResponseEntity<DeliveryPartnerResponse> findNearest(@RequestParam Double lat, @RequestParam Double lng) {
+		return ResponseEntity.ok(deliveryService.findNearestPartner(lat, lng));
+	}
+
+	// Partner by ID
+	@GetMapping("/partner/{partnerId}")
+	public ResponseEntity<DeliveryPartnerResponse> getPartnerById(@PathVariable Long partnerId) {
+		return ResponseEntity.ok(deliveryService.getPartnerById(partnerId));
+	}
+	// All partners — Admin
+	@GetMapping("/all-partners")
+	public ResponseEntity<List<DeliveryPartnerResponse>>
+	        getAllPartners() {
+	    return ResponseEntity.ok(
+	        deliveryService.getAllPartners());
+	}
+
+	// Delete partner — Admin
+	@DeleteMapping("/partners/{id}")
+	public ResponseEntity<String> deletePartner(
+	        @PathVariable Long id) {
+	    deliveryService.deletePartner(id);
+	    return ResponseEntity.ok(
+	        "Partner deleted!");
+	}
+	// UserId se partner lo
+	@GetMapping("/partner-by-user/{userId}")
+	public ResponseEntity<DeliveryPartnerResponse>
+	        getByUserId(
+	        @PathVariable Long userId) {
+	    return ResponseEntity.ok(
+	        deliveryService
+	            .getPartnerByUserId(userId));
 	}
 }

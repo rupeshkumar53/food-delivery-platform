@@ -18,12 +18,31 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.csrf(csrf -> csrf.disable())
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.authorizeHttpRequests(
-						auth -> auth.requestMatchers("/api/orders/health").permitAll().anyRequest().authenticated())
-				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+	    http
+	        .csrf(csrf -> csrf.disable())
+	        
+	        // ❌ disable default login
+	        .formLogin(form -> form.disable())
+	        .httpBasic(basic -> basic.disable())
 
-		return http.build();
+	        .sessionManagement(session -> 
+	            session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+	        
+	        .authorizeHttpRequests(auth -> auth
+	            .requestMatchers("/api/auth/**").permitAll()
+	            .requestMatchers("/api/orders/**").authenticated()
+	            .requestMatchers(
+	                    "/api/orders/health",
+	                    "/api/orders/delivery-orders",   
+	                    "/api/orders/restaurant-orders",
+	                   "/api/orders/delivery-orders/**",
+	                    "/api/orders/all")
+	                .permitAll()
+	            .anyRequest().authenticated()
+	        )
+	        
+	        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+	    return http.build();
 	}
 }

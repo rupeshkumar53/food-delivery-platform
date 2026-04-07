@@ -23,40 +23,35 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
 	@Override
 	public GatewayFilter apply(Config config) {
 		return (exchange, chain) -> {
+			ServerHttpRequest request = exchange.getRequest();
 
-			String path = exchange.getRequest().getURI().getPath();
+			// ✅ CORS headers HATA DIYE — application.yml globalcors handle karega
+			// ✅ OPTIONS preflight bhi HATA DIYA — Gateway khud handle karega
 
-			// ✅ Yeh paths JWT check se exempt
+			String path = request.getURI().getPath();
 			if (isPublicPath(path)) {
 				return chain.filter(exchange);
 			}
 
-			// Authorization header check karo
-			HttpHeaders headers = exchange.getRequest().getHeaders();
-
+			HttpHeaders headers = request.getHeaders();
 			if (!headers.containsKey(HttpHeaders.AUTHORIZATION)) {
-				return onError(exchange, "No Authorization Header", HttpStatus.UNAUTHORIZED);
+				return onError(exchange, HttpStatus.UNAUTHORIZED);
 			}
 
 			String authHeader = headers.getFirst(HttpHeaders.AUTHORIZATION);
-
 			if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-				return onError(exchange, "Invalid Authorization Header", HttpStatus.UNAUTHORIZED);
+				return onError(exchange, HttpStatus.UNAUTHORIZED);
 			}
 
-			// Token validate karo
 			String token = authHeader.substring(7);
-
 			if (!jwtUtil.isValid(token)) {
-				return onError(exchange, "Invalid or Expired Token", HttpStatus.UNAUTHORIZED);
+				return onError(exchange, HttpStatus.UNAUTHORIZED);
 			}
 
-			// ✅ User info headers mein add karo
-			// Downstream services use karenge
 			String email = jwtUtil.getEmail(token);
 			String role = jwtUtil.getRole(token);
 
-			ServerHttpRequest mutatedRequest = exchange.getRequest().mutate().header("X-User-Email", email)
+			ServerHttpRequest mutatedRequest = request.mutate().header("X-User-Email", email)
 					.header("X-User-Role", role).build();
 
 			ServerWebExchange mutatedExchange = exchange.mutate().request(mutatedRequest).build();
@@ -65,14 +60,16 @@ public class JwtAuthFilter extends AbstractGatewayFilterFactory<JwtAuthFilter.Co
 		};
 	}
 
-	// Public paths — JWT nahi chahiye
 	private boolean isPublicPath(String path) {
-		return path.contains("/api/auth/login") || path.contains("/api/auth/register") || path.contains("/health")
-				|| path.contains("/api/restaurants") && path.endsWith("/api/restaurants")
-				|| path.contains("/api/delivery/available");
+		return path.contains("/api/auth/login") || path.contains("/api/auth/register") || path.contains("/health") ||
+		// ✅ Admin service sab allow
+				path.startsWith("/api/admin/") || path.contains("/api/delivery/available")
+				|| path.contains("/api/delivery/nearest") || path.contains("/api/restaurants")
+				|| path.contains("/api/delivery/partner-by-user/") || path.equals("/api/restaurants")
+				|| path.contains("/api/ai/recommendations");
 	}
 
-	private Mono<Void> onError(ServerWebExchange exchange, String message, HttpStatus status) {
+	private Mono<Void> onError(ServerWebExchange exchange, HttpStatus status) {
 		exchange.getResponse().setStatusCode(status);
 		return exchange.getResponse().setComplete();
 	}

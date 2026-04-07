@@ -1,7 +1,6 @@
 package com.fooddelivery.order_service.DTO;
 
-import java.time.LocalDateTime;
-import java.util.List;
+
 
 import com.fooddelivery.order_service.Model.Order.OrderStatus;
 
@@ -10,11 +9,13 @@ public class OrderResponse {
 	private Long id;
 	private Long customerId;
 	private Long restaurantId;
+	private Long deliveryPartnerId;
+	private String deliveryPartnerName;
 	private OrderStatus status;
 	private Double totalAmount;
 	private String deliveryAddress;
-	private LocalDateTime placedAt;
-	private List<OrderItemRequest> items;
+	private java.time.LocalDateTime placedAt;
+	private java.util.List<OrderItemRequest> items;
 
 	public Long getId() {
 		return id;
@@ -38,6 +39,22 @@ public class OrderResponse {
 
 	public void setRestaurantId(Long restaurantId) {
 		this.restaurantId = restaurantId;
+	}
+
+	public Long getDeliveryPartnerId() {
+		return deliveryPartnerId;
+	}
+
+	public void setDeliveryPartnerId(Long deliveryPartnerId) {
+		this.deliveryPartnerId = deliveryPartnerId;
+	}
+
+	public String getDeliveryPartnerName() {
+		return deliveryPartnerName;
+	}
+
+	public void setDeliveryPartnerName(String deliveryPartnerName) {
+		this.deliveryPartnerName = deliveryPartnerName;
 	}
 
 	public OrderStatus getStatus() {
@@ -64,19 +81,19 @@ public class OrderResponse {
 		this.deliveryAddress = deliveryAddress;
 	}
 
-	public LocalDateTime getPlacedAt() {
+	public java.time.LocalDateTime getPlacedAt() {
 		return placedAt;
 	}
 
-	public void setPlacedAt(LocalDateTime placedAt) {
+	public void setPlacedAt(java.time.LocalDateTime placedAt) {
 		this.placedAt = placedAt;
 	}
 
-	public List<OrderItemRequest> getItems() {
+	public java.util.List<OrderItemRequest> getItems() {
 		return items;
 	}
 
-	public void setItems(List<OrderItemRequest> items) {
+	public void setItems(java.util.List<OrderItemRequest> items) {
 		this.items = items;
 	}
 

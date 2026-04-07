@@ -7,52 +7,68 @@ spring:
 
   cloud:
     gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:3000"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
       routes:
-        # Auth Service — No JWT needed
         - id: auth-service
           uri: lb://auth-service
           predicates:
             - Path=/api/auth/**
 
-        # Restaurant Service — JWT Filter
         - id: restaurant-service
           uri: lb://restaurant-service
           predicates:
             - Path=/api/restaurants/**,/api/menu/**
           filters:
-            - JwtAuthFilter
+           
 
-        # Order Service — JWT Filter
         - id: order-service
           uri: lb://order-service
           predicates:
             - Path=/api/orders/**
           filters:
-            - JwtAuthFilter
+          
 
-        # Delivery Service — JWT Filter
         - id: delivery-service
           uri: lb://delivery-service
           predicates:
             - Path=/api/delivery/**
           filters:
-            - JwtAuthFilter
+           
 
-        # Payment Service — JWT Filter
         - id: payment-service
           uri: lb://payment-service
           predicates:
             - Path=/api/payment/**
           filters:
-            - JwtAuthFilter
+           
 
-        # AI Service — JWT Filter
         - id: ai-service
           uri: lb://ai-service
           predicates:
             - Path=/api/ai/**
           filters:
-            - JwtAuthFilter
+           
+
+        - id: admin-service
+          uri: lb://admin-service
+          predicates:
+            - Path=/api/admin/**
+          filters:
+            
 
 eureka:
   client:

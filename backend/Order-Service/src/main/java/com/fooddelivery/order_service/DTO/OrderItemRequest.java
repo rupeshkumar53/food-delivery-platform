@@ -1,10 +1,13 @@
 package com.fooddelivery.order_service.DTO;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class OrderItemRequest {
 
 	private Long menuItemId;
 	private String itemName;
 	private Integer quantity;
+	@JsonProperty("price")
 	private Double unitPrice;
 
 	public Long getMenuItemId() {

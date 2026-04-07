@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/restaurants")
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 public class RestaurantController {
 
 	@Autowired
@@ -51,4 +51,20 @@ public class RestaurantController {
 	public ResponseEntity<String> health() {
 		return ResponseEntity.ok("Restaurant Service is UP! ✅");
 	}
+	@GetMapping("/all")
+	public ResponseEntity<List<RestaurantResponse>>
+	        getAllRestaurants() {
+	    return ResponseEntity.ok(
+	        restaurantService.getAllRestaurants());
+	}
+	// Owner ke restaurants
+	@GetMapping("/owner/{ownerId}")
+	public ResponseEntity<List<RestaurantResponse>>
+	        getByOwner(
+	        @PathVariable Long ownerId) {
+	    return ResponseEntity.ok(
+	        restaurantService
+	            .getByOwnerId(ownerId));
+	}
+	
 }

@@ -13,14 +13,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/ai")
-@CrossOrigin(origins = "*")
 public class AiController {
 
     @Autowired
     private AiService aiService;
 
     // Food recommendations lo
-    @PostMapping("/recommendations")
+    @PostMapping("/recommendations") 
     public ResponseEntity<RecommendationResponse>
             getRecommendations(
             @RequestBody RecommendationRequest request) {
